@@ -1,15 +1,33 @@
-## Put comments here that give an overall description of what your
-## functions do
+#creates a 'structured' matrix with setters and getters
 
-## Write a short comment describing this function
-
-makeCacheMatrix <- function(x = matrix()) {
-
+makeCacheMatrix <- function(x = matrix()){
+    inv <- NULL
+    
+    set <- function(new_mtr) {
+        x <<- new_mtr
+        inv <<- NULL 
+    }
+    get <- function() x 
+    
+    setInverse <- function(new_inv) inv <<- new_inv
+    getInverse <- function() inv
+    
+    list(set = set, get = get,
+         setInverse = setInverse,
+         getInverse = getInverse)
 }
 
-
-## Write a short comment describing this function
+# returns the inverse of matrix if this inverse is already
+# stored in cache, otherwise it computes the inverse
 
 cacheSolve <- function(x, ...) {
-        ## Return a matrix that is the inverse of 'x'
+    inv <- x$getInverse()
+    if(!is.null(inv)) {
+        message("getting cached inverse matrix data")
+        return(inv)
+    }
+    
+    inv <- solve(x$get(), ...)
+    x$setInverse(inv)
+    inv
 }
